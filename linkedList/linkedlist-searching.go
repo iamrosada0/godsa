@@ -1,5 +1,7 @@
 package linkedlist
 
+import "fmt"
+
 //create a loop and inside of loop we need to check if exist the value
 
 type Node struct {
@@ -14,18 +16,27 @@ type Linkedlist struct {
 }
 
 func (l *Linkedlist) Search(value int) bool {
+	current := l.Head
 
-	n := l.Head
-
-	for n != nil && n.Data != value {
-
-		n = n.Next
+	for current != nil {
+		if current.Data == value {
+			return true // Value found
+		}
+		current = current.Next
 	}
 
-	if n == nil {
-		return false
-	}
+	return false // Value not found
+}
 
-	return true
+func main() {
+	list := Linkedlist{}
 
+	// Adding some nodes
+	list.Head = &Node{Data: 10}
+	list.Head.Next = &Node{Data: 20}
+	list.Head.Next.Next = &Node{Data: 30}
+
+	// Searching for values
+	fmt.Println(list.Search(20)) // Output: true
+	fmt.Println(list.Search(40)) // Output: false
 }
