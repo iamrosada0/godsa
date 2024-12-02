@@ -1,6 +1,8 @@
 package heaps
 
-import "fmt"
+import (
+	"fmt"
+)
 
 type MaxHeap struct {
 	array []int
@@ -33,7 +35,59 @@ func (h *MaxHeap) maxHeapifyUp(index int) {
 		index = parent(index)
 	}
 }
+func (h *MaxHeap) findIndex(value int) int {
 
+	for i, v := range h.array {
+
+		if v == value {
+			return i
+		}
+	}
+	return -1
+}
+
+func (h *MaxHeap) Remove(value int) bool {
+
+	index := h.findIndex(value)
+
+	if index == -1 {
+		return false
+	}
+
+	lastIndex := len(h.array) - 1
+
+	h.array[index] = h.array[lastIndex]
+
+	h.array = h.array[:lastIndex]
+
+	h.maxHeapifyDown(index)
+	return true
+}
+
+func (h *MaxHeap) maxHeapifyDown(index int) {
+	lastIndex := len(h.array) - 1
+	leftChild := left(index)
+	rightChild := right(index)
+
+	for leftChild <= lastIndex {
+
+		largerChild := leftChild
+
+		if rightChild <= lastIndex && h.array[rightChild] > h.array[leftChild] {
+			largerChild = rightChild
+		}
+
+		if h.array[index] >= h.array[largerChild] {
+			break
+		}
+
+		h.swap(index, largerChild)
+
+		index = largerChild
+		leftChild = left(index)
+		rightChild = right(index)
+	}
+}
 func main() {
 
 	m := &MaxHeap{}
